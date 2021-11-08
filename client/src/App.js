@@ -1,14 +1,9 @@
-import "./App.css";
-import data from "./data";
-import { BrowserRouter, Route } from "react-router-dom";
-import Product from "./components/Product";
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import HomeScreen from './screens/HomeScreen';
+import ProductScreen from './screens/ProductScreen';
+
 function App() {
-  const openMenu = () => {
-    document.querySelector(".sidebar").classNameList.add("open");
-  };
-  const closeMenu = () => {
-    document.querySelector(".sidebar").classNameList.remove("open");
-  };
   return (
     <BrowserRouter>
       <div className="grid-container">
@@ -24,13 +19,8 @@ function App() {
           </div>
         </header>
         <main>
-          <div>
-            <div className="row center">
-              {data.products.map((product) => (
-                <Product key={product._id} product={product} />
-              ))}
-            </div>
-          </div>
+          <Route path="/product/:id" component={ProductScreen}></Route>
+          <Route path="/" component={HomeScreen} exact></Route>
         </main>
         <footer className="row center">All right reserved</footer>
       </div>
