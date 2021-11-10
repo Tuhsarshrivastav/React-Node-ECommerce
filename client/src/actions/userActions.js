@@ -44,11 +44,12 @@ export const signin = (email, password) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    });
+  });
   }
 };
 export const signout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   localStorage.removeItem("cartItems");
+  localStorage.removeItem('shippingAddress');
   dispatch({ type: USER_SIGNOUT });
 };
