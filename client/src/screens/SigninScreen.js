@@ -1,34 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { signin } from "../actions/userActions";
-export default function SigninScreen({ location, history }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { signin } from '../actions/userActions';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+export default function SigninScreen(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const redirect = props.location.search
+    ? props.location.search.split('=')[1]
+    : '/';
 
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo, loading, error } = userSignin;
 
-  //dispatch init
   const dispatch = useDispatch();
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(signin(email, password));
   };
-
   useEffect(() => {
     if (userInfo) {
-      history.push(redirect);
+      props.history.push(redirect);
     }
-  }, [history, redirect, userInfo]);
+  }, [props.history, redirect, userInfo]);
   return (
     <div>
       <form className="form" onSubmit={submitHandler}>
         <div>
           <h1>Sign In</h1>
         </div>
+        {loading && <LoadingBox></LoadingBox>}
+        {error && <MessageBox variant="danger">{error}</MessageBox>}
         <div>
           <label htmlFor="email">Email address</label>
           <input
@@ -58,7 +63,7 @@ export default function SigninScreen({ location, history }) {
         <div>
           <label />
           <div>
-            New customer?{" "}
+            New customer?{' '}
             <Link to={`/register?redirect=${redirect}`}>
               Create your account
             </Link>
